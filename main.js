@@ -14,15 +14,36 @@ let startPiece = [
 	new Pawn(1, 25),
 	new Pawn(1, 26),
 	new Pawn(1, 27),
-	new Pawn(1, 28)
+	new Pawn(1, 28),
+	new Pawn(0, 71),
+	new Pawn(0, 72),
+	new Pawn(0, 73),
+	new Pawn(0, 74),
+	new Pawn(0, 75),
+	new Pawn(0, 76),
+	new Pawn(0, 77),
+	new Pawn(0, 78),
+	new Rook(0, 81),
+	new Knight(0, 82),
+	new Bishop(0, 83),
+	new Queen(0, 84),
+	new King(0, 85),
+	new Bishop(0, 86),
+	new Knight(0, 87),
+	new Rook(0, 88)
 ]
 
 startBoard(startPiece)
 
-let clickedPiece = null
+const squares = document.querySelectorAll('.square')
+squares.forEach(function(square) {
+	square.addEventListener('click', handleClick)
+})
 
-function userClick(el) {
-	let id = parseInt(el.getAttribute('id'))
+let clickedPiece = null 
+
+function handleClick(el) {
+	let id = parseInt(el.target.getAttribute('id'))
 	
 	if(!clickedPiece && hasPiece(id)) {
 		clickedPiece = getPiece(id)
@@ -30,17 +51,17 @@ function userClick(el) {
 		return
 	}
 	
-	if(clickedPiece && hasClicked(id)) {
+	if(clickedPiece && hasClick(id)) {
 		uncheckBoard(clickedPiece.allowedMove())
 		clickedPiece = null
 		return
 	}
 	
-	if(clickedPiece && isValidMove(id)) {
+	if(clickedPiece && isMove(id)) {
 		uncheckBoard(clickedPiece.allowedMove())
 		clickedPiece.position = id
 		updateBoard(startPiece)
-		clickedPiece = null
+		clickedPiece = null 
 		return
 	}
 }
@@ -51,17 +72,21 @@ function hasPiece(id) {
 	return false
 }
 
-function hasClicked(id) {
-	return id === clickedPiece.position
-}
-
 function getPiece(id) {
 	return startPiece.filter(e => e.position === id)[0]
 }
 
-function isValidMove(id) {
+function hasClick(id) {
+	return id === clickedPiece.position
+}
+
+function isMove(id) {
 	if(!hasPiece(id) && clickedPiece.allowedMove().includes(id)) {
 		return true
 	}
 	return false
+}
+
+function isKill(id) {
+	
 }

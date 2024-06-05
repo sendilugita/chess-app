@@ -7,7 +7,6 @@ const initBoard = function() {
 		for(let x = 1; x <= 8; x++) {
 			let square = document.createElement('div')
 			square.classList.add('square', 'fs-2', 'text-center')
-			square.setAttribute('onclick', 'userClick(this)')
 			square.setAttribute('id', ''+i+x)
 			square.style.width = '40px'
 			square.style.height = '40px'
@@ -22,7 +21,6 @@ const clearBoard = function() {
 	const squares = document.querySelectorAll('.square')
 	squares.forEach(function(square) {
 		square.innerHTML = ''
-		square.style.removeProperty('color')
 	})
 }
 
@@ -30,7 +28,7 @@ const updateBoard = function(pieces) {
 	clearBoard()
 	pieces.forEach(function(piece) {
 		document.getElementById(piece.position).innerHTML = piece.icon
-		if(piece.color === 'w') {
+		if(piece.color === 0) {
 			document.getElementById(piece.position).style.color = 'chocolate'
 		} else {
 			document.getElementById(piece.position).style.color = 'brown'
@@ -39,19 +37,18 @@ const updateBoard = function(pieces) {
 }
 
 const startBoard = function(pieces) {
-	initBoard()
-	clearBoard()
+	initBoard.call()
 	updateBoard(pieces)
 }
 
 const checkBoard = function(move) {
-	move.forEach(function(pos) {
-		document.getElementById(pos).style.opacity = '0.5'
-	})
+	for(const n of clickedPiece.allowedMove()) {
+		document.getElementById(n).style.opacity = '0.5'
+	}
 }
 
 const uncheckBoard = function(move) {
-	move.forEach(function(pos) {
-		document.getElementById(pos).style.removeProperty('opacity')
-	})
+	for(const n of clickedPiece.allowedMove()) {
+		document.getElementById(n).style.removeProperty('opacity')
+	}
 }
